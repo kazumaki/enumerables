@@ -130,9 +130,7 @@ module Enumerable
     elsif xarg[0].class == Symbol
       ret_val = first
       my_each_with_index do |x, i|
-        if i.positive?
-          ret_val = xarg[0].to_proc.call(ret_val, x)
-        end
+        ret_val = xarg[0].to_proc.call(ret_val, x) if i.positive?
       end
     else
       ret_val = xarg[0]
