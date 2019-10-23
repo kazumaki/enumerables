@@ -23,6 +23,7 @@ module Enumerable
 
   def my_select
     return self.to_enum if !block_given?
+
     ret_arr = []
     self.my_each do |i|
       if(yield(i))
@@ -31,9 +32,20 @@ module Enumerable
     end
     return ret_arr
   end
+
+  def my_all?
+    return true if !block_given?
+
+    self.my_each do |i|
+      if(!yield(i))
+        return false
+      end
+    end
+    return true
+  end
+
 end
 
 
-arr =  (0..10).my_select { |x| x > 3}
-
-puts arr
+test = (0..10).my_all? { |x| x >= 0}
+puts test
