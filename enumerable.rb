@@ -77,9 +77,19 @@ module Enumerable
     return count
   end
 
+  def my_map
+    return self.to_enum if !block_given?
+
+    ret_arr = []
+
+    self.my_each { |i| ret_arr.push(yield(i)) }
+
+    return ret_arr
+  end
+
 end
 
-count = (1..10).my_count(1)
+count = (1..10).my_map { |x| 2 }
 
 puts count
 
