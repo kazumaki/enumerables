@@ -1,3 +1,5 @@
+# rubocop:disable Style/CaseEquality
+
 module Enumerable
   def my_each
     return self.to_enum if !block_given?
