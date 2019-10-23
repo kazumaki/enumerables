@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/CyclomaticComplexity
+# rubocop:disable Metrics/PerceivedComplexity
+# rubocop:disable Metrics/ModuleLength
+
 module Enumerable
   def my_each
     return to_enum unless block_given?
@@ -35,20 +39,18 @@ module Enumerable
   end
 
   def my_all?(*arg)
-    if arg.empty? && !block_given?
+    if arg.empty?
+      my_each { |i| return false unless yield(i) } if block_given?
+      return true if block_given?
       my_each { |i| return false unless i }
       return true
-    elsif arg.empty? && block_given?
-      my_each { |i| return false unless yield(i) }
+    else
+      my_each { |i| return false unless i.match(arg[0]) } if arg[0].class == Regexp
+      return true if arg[0].class == Regexp
+      my_each { |i| return false unless i.class == arg[0] } if arg[0].is_a(Class)
+      return true if arg[0].is_a(Class)
+      my_each { |i| return false unless i == arg[0] }
       return true
-    elsif !arg.empty
-      case arg[0].class
-      when Regexp
-        my_each { |i| return false unless i.match(arg[0]) } 
-        return true
-      else
-        my_each { |i| return false unless i.class == arg[0] }
-      end
     end
   end
 
@@ -125,6 +127,10 @@ module Enumerable
     ret_val
   end
 end
+
+# rubocop:enable Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/PerceivedComplexity
+# rubocop:enable Metrics/ModuleLength
 
 def multiply_els(arr)
   arr.my_inject { |result, value| result * value }
