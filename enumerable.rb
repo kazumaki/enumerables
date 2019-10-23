@@ -48,6 +48,7 @@ module Enumerable
         return true
       else
         my_each { |i| return false unless i.class == arg[0] }
+      end
     end
     true
   end
