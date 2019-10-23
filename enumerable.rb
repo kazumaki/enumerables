@@ -41,11 +41,14 @@ module Enumerable
         return true
       end
       my_each { |i| return false unless i }
-    elsif arg[0].class == Regexp
+    else
+      case arg[0].class
+      when Regexp
         my_each { |i| return false unless i.match(arg[0]) } 
         return true
+      else
+        my_each { |i| return false unless i.class == arg[0] }
     end
-    my_each { |i| return false unless i.class == arg[0] }
     true
   end
 
