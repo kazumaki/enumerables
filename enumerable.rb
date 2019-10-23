@@ -65,5 +65,21 @@ module Enumerable
     end
     return true
   end
+
+  def my_count *x
+    count = 0
+    if x.empty?
+      self.my_each { |i| count += 1 } if !block_given?
+      self.my_each { |i| count += 1 if yield(i) } if block_given?
+    else
+      self.my_each { |i| count += 1 if i == x[0] }
+    end
+    return count
+  end
+
 end
+
+count = (1..10).my_count(1)
+
+puts count
 
