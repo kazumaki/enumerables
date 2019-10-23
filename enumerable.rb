@@ -36,85 +36,43 @@ module Enumerable
 
   def my_all?(*arg)
     if arg.empty?
-      if block_given?
-        my_each do |i|
-          return false unless yield(i)
-        end
-        return true
-      else
-        my_each do |i|
-          return false unless i
-        end
-        return true
-      end
+      my_each { |i| return false unless yield(i) } if block_given?
+      return true if block_given?
+      my_each { |i| return false unless i }
+      return true
     else
-      if arg[0].class == Regexp
-        my_each do |i|
-          return false unless i.match(arg[0])
-        end
-        return true
-      else
-        my_each do |i|
-          return false unless i.class == arg[0]
-        end
-        return true
-      end
+      my_each { |i| return false unless i.match(arg[0]) } if arg[0].class == Regexp
+      return true if arg[0].class == Regexp
+      my_each { |i| return false unless i.class == arg[0] }
+      return true
     end
   end
 
   def my_any?(*arg)
     if arg.empty?
-      if block_given?
-        my_each do |i|
-          return true if yield(i)
-        end
-        return false
-      else
-        my_each do |i|
-          return true if i
-        end
-        return false
-      end
+      my_each { |i| return true if yield(i) } if block_given?
+      return false if block_given?
+      my_each { |i| return true if i }
+      return false
     else
-      if arg[0].class == Regexp
-        my_each do |i|
-          return true if i.match(arg[0])
-        end
-        return false
-      else
-        my_each do |i|
-          return true if i.class == arg[0]
-        end
-        return false
-      end
+      my_each { |i| return true if i.match(arg[0]) } if arg[0].class == Regexp
+      return false if arg[0].class == Regexp     
+      my_each { |i| return true if i.class == arg[0] }
+      return false
     end
   end
 
   def my_none?(*arg)
     if arg.empty?
-      if block_given?
-        my_each do |i|
-          return false if yield(i)
-        end
-        return true
-      else
-        my_each do |i|
-          return false if i
-        end
-        return true
-      end
+      my_each { |i| return false if yield(i) } if block_given?
+      return true if block_given?
+      my_each { |i| return false if i }
+      return true
     else
-      if arg[0].class == Regexp
-        my_each do |i|
-          return false if i.match(arg[0])
-        end
-        return true
-      else
-        my_each do |i|
-          return false if i.class == arg[0]
-        end
-        return true
-      end
+      my_each { |i| return false if i.match(arg[0]) } if arg[0].class == Regexp
+      return true if arg[0].class == Regexp
+      my_each { |i| return false if i.class == arg[0] }
+      return true
     end
   end
 
@@ -131,14 +89,12 @@ module Enumerable
 
   def my_map(*proc_obj)
     return to_enum if !block_given? && proc_obj.empty?
-
     ret_arr = []
     if !proc_obj.empty?
       my_each { |i| ret_arr.push(proc_obj[0].call(i)) }
     else
       my_each { |i| ret_arr.push(yield(i)) }
     end
-
     ret_arr
   end
 
