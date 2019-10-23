@@ -50,53 +50,53 @@ module Enumerable
       return true if yield(i)
     end
 
-    return false
+    false
   end
 
   def my_none?
     return true unless block_given?
 
-    self.my_each do |i|
+    my_each do |i|
       return false if yield(i)
     end
-    
-    return true
+
+    true
   end
 
-  def my_count *x
+  def my_count *xarg
     count = 0
     if x.empty?
-      self.my_each { |i| count += 1 } if !block_given?
-      self.my_each { |i| count += 1 if yield(i) } if block_given?
+      my_each { count += 1 } unless block_given?
+      my_each { |i| count += 1 if yield(i) } if block_given?
     else
-      self.my_each { |i| count += 1 if i == x[0] }
+      my_each { |i| count += 1 if i == xarg[0] }
     end
-    return count
+    count
   end
 
-  def my_map *proc_obj
-    return self.to_enum if !block_given? && proc_obj.empty?
+  def my_map (*proc_obj)
+    return to_enum if !block_given? && proc_obj.empty?
     ret_arr = []
-    if(!proc_obj.empty?)
-      self.my_each { |i| ret_arr.push(proc_obj[0].call(i)) }
+    if (!proc_obj.empty?)
+      my_each { |i| ret_arr.push(proc_obj[0].call(i)) }
     else
-      self.my_each { |i| ret_arr.push(yield(i)) }
+      my_each { |i| ret_arr.push(yield(i)) }
     end
 
-    return ret_arr
+    ret_arr
   end
 
   def my_inject *x
     if(x.empty?)
-      ret_val = self.first
-      self.my_each_with_index do |val, i|
+      ret_val = first
+      my_each_with_index do |val, i|
         if i > 0
           ret_val = yield(ret_val, val)
         end
       end
     else
       ret_val = x[0]
-      self.my_each { |i| ret_val = yield(ret_val, i) }
+      my_each { |i| ret_val = yield(ret_val, i) }
     end
 
     return ret_val
