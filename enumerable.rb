@@ -44,8 +44,15 @@ module Enumerable
     return true
   end
 
+  def my_any?
+    return true if !block_given?
+
+    self.my_each do |i|
+      if(yield(i))
+        return true
+      end
+    end
+    return false
+  end
 end
 
-
-test = (0..10).my_all? { |x| x >= 0}
-puts test
