@@ -39,12 +39,12 @@ module Enumerable
       my_each { |i| return false unless yield(i) } if block_given?
       return true if block_given?
       my_each { |i| return false unless i }
-      return true
+      true
     else
       my_each { |i| return false unless i.match(arg[0]) } if arg[0].class == Regexp
       return true if arg[0].class == Regexp
       my_each { |i| return false unless i.class == arg[0] }
-      return true
+      true
     end
   end
 
