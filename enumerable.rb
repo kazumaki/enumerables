@@ -62,29 +62,65 @@ module Enumerable
     end
   end
 
-  def my_any?
-    return true unless block_given?
-
-    my_each do |i|
-      return true if yield(i)
+  def my_any?(*arg)
+    if arg.empty?
+      if block_given?
+        my_each do |i|
+          return true if yield(i)
+        end
+        return false
+      else
+        my_each do |i|
+          return true if i
+        end
+        return false
+      end
+    else
+      if arg[0].class == Regexp
+        my_each do |i|
+          return true if i.match(arg[0])
+        end
+        return false
+      else
+        my_each do |i|
+          return true if i.class == arg[0]
+        end
+        return false
+      end
     end
-
-    false
   end
 
-  def my_none?
-    return true unless block_given?
-
-    my_each do |i|
-      return false if yield(i)
+  def my_none?(*arg)
+    if arg.empty?
+      if block_given?
+        my_each do |i|
+          return false if yield(i)
+        end
+        return true
+      else
+        my_each do |i|
+          return false if i
+        end
+        return true
+      end
+    else
+      if arg[0].class == Regexp
+        my_each do |i|
+          return false if i.match(arg[0])
+        end
+        return true
+      else
+        my_each do |i|
+          return false if i.class == arg[0]
+        end
+        return true
+      end
     end
-
-    true
   end
 
   def my_count(*xarg)
     count = 0
-    if x.empty?
+    if xarg.empty?
       my_each { count += 1 } unless block_given?
       my_each { |i| count += 1 if yield(i) } if block_given?
     else
@@ -113,8 +149,17 @@ module Enumerable
         ret_val = yield(ret_val, val) if i.positive?
       end
     else
-      ret_val = xarg[0]
-      my_each { |i| ret_val = yield(ret_val, i) }
+      if(xarg[0].class == Symbol)
+        ret_val = first
+        my_each_with_index do |x, i|
+          if i.positive?
+            ret_val = xarg[0].to_proc.call(ret_val, x)
+          end
+        end
+      else
+        ret_val = xarg[0]
+        my_each { |i| ret_val = yield(ret_val, i) }
+      end
     end
 
     ret_val
@@ -125,4 +170,3 @@ def multiply_els(arr)
   arr.my_inject { |result, value| result * value }
 end
 
-puts [1, 1, false].my_all?
