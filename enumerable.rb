@@ -6,7 +6,7 @@ module Enumerable
 
     arr = to_a
     i = 0
-    while (i < arr.length) do
+    while i < arr.length do
       yield(arr[i])
       i += 1
     end
@@ -17,7 +17,7 @@ module Enumerable
 
     arr = to_a
     i = 0
-    while i < arr.length do
+    while i < arr.length
       yield(arr[i], i)
       i += 1
     end
@@ -30,18 +30,17 @@ module Enumerable
     my_each do |i|
       ret_arr.push(i) if yield(i)
     end
-    return ret_arr
+
+    ret_arr
   end
 
   def my_all?
     return true unless block_given?
 
-    self.my_each do |i|
-      if(!yield(i))
-        return false
-      end
+    my_each do |i|
+      return false unless yield(i)
     end
-    return true
+    true
   end
 
   def my_any?
