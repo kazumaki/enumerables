@@ -87,9 +87,29 @@ module Enumerable
     return ret_arr
   end
 
+  def my_inject *x
+    if(x.empty?)
+      ret_val = self.first
+      self.my_each_with_index do |val, i|
+        if i > 0
+          ret_val = yield(ret_val, val)
+        end
+      end
+    else
+      ret_val = x[0]
+      self.my_each { |i| ret_val = yield(ret_val, i) }
+    end
+
+    return ret_val
+  end
 end
 
-count = (1..10).my_map { |x| 2 }
+def multiply_els arr
+  return arr.my_inject{ |result, value| result * value }
+end
 
-puts count
+puts multiply_els([2,4,5])
+
+
+
 
