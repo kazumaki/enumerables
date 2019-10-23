@@ -34,13 +34,32 @@ module Enumerable
     ret_arr
   end
 
-  def my_all?
-    return true unless block_given?
-
-    my_each do |i|
-      return false unless yield(i)
+  def my_all?(*arg)
+    if arg.empty?
+      if block_given?
+        my_each do |i|
+          return false unless yield(i)
+        end
+        return true
+      else
+        my_each do |i|
+          return false unless i
+        end
+        return true
+      end
+    else
+      if arg[0].class == Regexp
+        my_each do |i|
+          return false unless i.match(arg[0])
+        end
+        return true
+      else
+        my_each do |i|
+          return false unless i.class == arg[0]
+        end
+        return true
+      end
     end
-    true
   end
 
   def my_any?
@@ -105,3 +124,5 @@ end
 def multiply_els(arr)
   arr.my_inject { |result, value| result * value }
 end
+
+puts [1, 1, false].my_all?
