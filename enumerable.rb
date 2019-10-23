@@ -2,7 +2,7 @@
 
 module Enumerable
   def my_each
-    return self.to_enum unless block_given?
+    return to_enum unless block_given?
 
     arr = self.to_a
     i = 0
