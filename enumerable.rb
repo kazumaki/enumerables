@@ -36,12 +36,16 @@ module Enumerable
 
   def my_all?(*arg)
     if arg.empty?
-      my_each { |i| return false unless yield(i) } if block_given?
-      return true if block_given?
+      if block_given?
+        my_each { |i| return false unless yield(i) }
+        return true
+      end
       my_each { |i| return false unless i }
     else
-      my_each { |i| return false unless i.match(arg[0]) } if arg[0].class == Regexp
-      return true if arg[0].class == Regexp
+      if arg[0].class == Regexp
+        my_each { |i| return false unless i.match(arg[0]) } 
+        return true
+      end
       my_each { |i| return false unless i.class == arg[0] }
     end
     true
