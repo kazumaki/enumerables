@@ -77,12 +77,11 @@ module Enumerable
     return count
   end
 
-  def my_map
-    return self.to_enum if !block_given?
+  def my_map proc_obj
 
     ret_arr = []
 
-    self.my_each { |i| ret_arr.push(yield(i)) }
+    self.my_each { |i| ret_arr.push(proc_obj.call(i)) }
 
     return ret_arr
   end
@@ -107,6 +106,13 @@ end
 def multiply_els arr
   return arr.my_inject{ |result, value| result * value }
 end
+
+a_proc = Proc.new do |i|
+  2
+end
+
+arr = (1..10).my_map(a_proc)
+puts arr
 
 puts multiply_els([2,4,5])
 
