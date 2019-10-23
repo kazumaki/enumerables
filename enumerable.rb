@@ -43,7 +43,7 @@ module Enumerable
       my_each { |i| return false unless yield(i) } if block_given?
 
       return true if block_given?
-      
+
       my_each { |i| return false unless i }
     else
       my_each { |i| return false unless i.match(arg[0]) } if arg[0].class == Regexp
@@ -68,7 +68,7 @@ module Enumerable
     else
       my_each { |i| return true if i.match(arg[0]) } if arg[0].class == Regexp
 
-      return false if arg[0].class == Regexp     
+      return false if arg[0].class == Regexp
 
       my_each { |i| return true if i.class == arg[0] } if arg[0].is_a?(Class)
       return false if arg[0].is_a?(Class)
@@ -82,6 +82,7 @@ module Enumerable
     if arg.empty?
       my_each { |i| return false if yield(i) } if block_given?
       return true if block_given?
+
       my_each { |i| return false if i }
       return true
     else
@@ -94,7 +95,7 @@ module Enumerable
 
       my_each { |i| return false if i == arg[0] }
     end
-    return true
+    true
   end
 
   def my_count(*xarg)
@@ -110,6 +111,7 @@ module Enumerable
 
   def my_map(*proc_obj)
     return to_enum if !block_given? && proc_obj.empty?
+
     ret_arr = []
     if !proc_obj.empty?
       my_each { |i| ret_arr.push(proc_obj[0].call(i)) }
@@ -126,7 +128,7 @@ module Enumerable
         ret_val = yield(ret_val, val) if i.positive?
       end
     else
-      if(xarg[0].class == Symbol)
+      if xarg[0].class == Symbol
         ret_val = first
         my_each_with_index do |x, i|
           if i.positive?
@@ -150,6 +152,3 @@ end
 def multiply_els(arr)
   arr.my_inject { |result, value| result * value }
 end
-
-puts ['b', 'a', true].my_any?(Integer)
-
