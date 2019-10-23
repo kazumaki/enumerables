@@ -41,31 +41,41 @@ module Enumerable
   def my_all?(*arg)
     if arg.empty?
       my_each { |i| return false unless yield(i) } if block_given?
+
       return true if block_given?
+      
       my_each { |i| return false unless i }
-      return true
     else
       my_each { |i| return false unless i.match(arg[0]) } if arg[0].class == Regexp
+
       return true if arg[0].class == Regexp
-      my_each { |i| return false unless i.class == arg[0] } if arg[0].is_a(Class)
-      return true if arg[0].is_a(Class)
+
+      my_each { |i| return false unless i.class == arg[0] } if arg[0].is_a?(Class)
+      return true if arg[0].is_a?(Class)
+
       my_each { |i| return false unless i == arg[0] }
-      return true
     end
+    true
   end
 
   def my_any?(*arg)
     if arg.empty?
       my_each { |i| return true if yield(i) } if block_given?
+
       return false if block_given?
+
       my_each { |i| return true if i }
-      return false
     else
       my_each { |i| return true if i.match(arg[0]) } if arg[0].class == Regexp
+
       return false if arg[0].class == Regexp     
-      my_each { |i| return true if i.class == arg[0] }
-      return false
+
+      my_each { |i| return true if i.class == arg[0] } if arg[0].is_a?(Class)
+      return false if arg[0].is_a?(Class)
+
+      my_each { |i| return true if i == arg[0] }
     end
+    false
   end
 
   def my_none?(*arg)
@@ -77,9 +87,14 @@ module Enumerable
     else
       my_each { |i| return false if i.match(arg[0]) } if arg[0].class == Regexp
       return true if arg[0].class == Regexp
-      my_each { |i| return false if i.class == arg[0] }
-      return true
+
+      my_each { |i| return false if i.class == arg[0] } if arg[0].is_a?(Class)
+
+      return true if arg[0].is_a?(Class)
+
+      my_each { |i| return false if i == arg[0] }
     end
+    return true
   end
 
   def my_count(*xarg)
@@ -135,4 +150,6 @@ end
 def multiply_els(arr)
   arr.my_inject { |result, value| result * value }
 end
+
+puts ['b', 'a', true].my_any?(Integer)
 
