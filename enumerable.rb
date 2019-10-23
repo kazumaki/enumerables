@@ -88,7 +88,7 @@ module Enumerable
   end
 
   def my_inject(*xarg)
-    if (xarg.empty?)
+    if xarg.empty?
       ret_val = first
       my_each_with_index do |val, i|
         ret_val = yield(ret_val, val) if i.positive?
