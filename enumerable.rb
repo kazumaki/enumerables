@@ -109,16 +109,3 @@ end
 def multiply_els arr
   return arr.my_inject{ |result, value| result * value }
 end
-
-a_proc = Proc.new do |i|
-  2
-end
-
-arr = (1..10).my_map
-puts arr
-
-puts multiply_els([2,4,5])
-
-
-
-
