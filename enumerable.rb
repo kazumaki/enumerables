@@ -4,33 +4,31 @@ module Enumerable
   def my_each
     return to_enum unless block_given?
 
-    arr = self.to_a
+    arr = to_a
     i = 0
     while (i < arr.length) do
       yield(arr[i])
       i += 1
-    end  
+    end
   end
 
   def my_each_with_index
-    return self.to_enum unless block_given?
+    return to_enum unless block_given?
 
-    arr = self.to_a
+    arr = to_a
     i = 0
-    while (i < arr.length) do
+    while i < arr.length do
       yield(arr[i], i)
       i += 1
     end
   end
 
   def my_select
-    return self.to_enum unless block_given?
+    return to_enum unless block_given?
 
     ret_arr = []
-    self.my_each do |i|
-      if(yield(i))
-        ret_arr.push(i)
-      end
+    my_each do |i|
+      ret_arr.push(i) if yield(i)
     end
     return ret_arr
   end
@@ -111,4 +109,3 @@ end
 def multiply_els arr
   return arr.my_inject{ |result, value| result * value }
 end
-
