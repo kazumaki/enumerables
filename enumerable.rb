@@ -78,7 +78,7 @@ module Enumerable
     return to_enum if !block_given? && proc_obj.empty?
 
     ret_arr = []
-    if  !proc_obj.empty?
+    if !proc_obj.empty?
       my_each { |i| ret_arr.push(proc_obj[0].call(i)) }
     else
       my_each { |i| ret_arr.push(yield(i)) }
@@ -88,20 +88,20 @@ module Enumerable
   end
 
   def my_inject(*xarg)
-    if(xarg.empty?)
+    if (xarg.empty?)
       ret_val = first
       my_each_with_index do |val, i|
-        ret_val = yield(ret_val, val) if i > 0
+        ret_val = yield(ret_val, val) if i.positive?
       end
     else
       ret_val = xarg[0]
       my_each { |i| ret_val = yield(ret_val, i) }
     end
 
-    return ret_val
+    ret_val
   end
 end
 
-def multiply_els arr
-  return arr.my_inject{ |result, value| result * value }
+def multiply_els(arr)
+  arr.my_inject { |result, value| result * value }
 end
