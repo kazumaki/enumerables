@@ -1,8 +1,8 @@
-# rubocop:disable Style/CaseEquality
+# frozen_string_literal: true
 
 module Enumerable
   def my_each
-    return self.to_enum if !block_given?
+    return self.to_enum unless block_given?
 
     arr = self.to_a
     i = 0
@@ -13,7 +13,7 @@ module Enumerable
   end
 
   def my_each_with_index
-    return self.to_enum if !block_given?
+    return self.to_enum unless block_given?
 
     arr = self.to_a
     i = 0
@@ -24,7 +24,7 @@ module Enumerable
   end
 
   def my_select
-    return self.to_enum if !block_given?
+    return self.to_enum unless block_given?
 
     ret_arr = []
     self.my_each do |i|
@@ -36,7 +36,7 @@ module Enumerable
   end
 
   def my_all?
-    return true if !block_given?
+    return true unless block_given?
 
     self.my_each do |i|
       if(!yield(i))
@@ -47,7 +47,7 @@ module Enumerable
   end
 
   def my_any?
-    return true if !block_given?
+    return true unless block_given?
 
     self.my_each do |i|
       if(yield(i))
@@ -58,7 +58,7 @@ module Enumerable
   end
 
   def my_none?
-    return true if !block_given?
+    return true unless block_given?
 
     self.my_each do |i|
       if(yield(i))
@@ -111,3 +111,4 @@ end
 def multiply_els arr
   return arr.my_inject{ |result, value| result * value }
 end
+
