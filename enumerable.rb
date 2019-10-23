@@ -127,18 +127,16 @@ module Enumerable
       my_each_with_index do |val, i|
         ret_val = yield(ret_val, val) if i.positive?
       end
-    else
-      if xarg[0].class == Symbol
-        ret_val = first
-        my_each_with_index do |x, i|
-          if i.positive?
-            ret_val = xarg[0].to_proc.call(ret_val, x)
-          end
+    elsif xarg[0].class == Symbol
+      ret_val = first
+      my_each_with_index do |x, i|
+        if i.positive?
+          ret_val = xarg[0].to_proc.call(ret_val, x)
         end
-      else
-        ret_val = xarg[0]
-        my_each { |i| ret_val = yield(ret_val, i) }
       end
+    else
+      ret_val = xarg[0]
+      my_each { |i| ret_val = yield(ret_val, i) }
     end
 
     ret_val
