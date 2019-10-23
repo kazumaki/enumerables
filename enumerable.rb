@@ -63,7 +63,7 @@ module Enumerable
     true
   end
 
-  def my_count *xarg
+  def my_count(*xarg)
     count = 0
     if x.empty?
       my_each { count += 1 } unless block_given?
@@ -74,10 +74,11 @@ module Enumerable
     count
   end
 
-  def my_map (*proc_obj)
+  def my_map(*proc_obj)
     return to_enum if !block_given? && proc_obj.empty?
+
     ret_arr = []
-    if (!proc_obj.empty?)
+    if  !proc_obj.empty?
       my_each { |i| ret_arr.push(proc_obj[0].call(i)) }
     else
       my_each { |i| ret_arr.push(yield(i)) }
@@ -86,16 +87,14 @@ module Enumerable
     ret_arr
   end
 
-  def my_inject *x
-    if(x.empty?)
+  def my_inject(*xarg)
+    if(xarg.empty?)
       ret_val = first
       my_each_with_index do |val, i|
-        if i > 0
-          ret_val = yield(ret_val, val)
-        end
+        ret_val = yield(ret_val, val) if i > 0
       end
     else
-      ret_val = x[0]
+      ret_val = xarg[0]
       my_each { |i| ret_val = yield(ret_val, i) }
     end
 
