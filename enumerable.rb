@@ -124,14 +124,15 @@ module Enumerable
   def my_inject(*xarg)
     if xarg.empty?
       ret_val = first
-      my_each_with_index do |val, i|
-        ret_val = yield(ret_val, val) if i.positive?
-      end
+      my_each_with_index { |val, i| ret_val = yield(ret_val, val) if i.positive? } if block_given?
     elsif xarg[0].class == Symbol
       ret_val = first
       my_each_with_index do |x, i|
         ret_val = xarg[0].to_proc.call(ret_val, x) if i.positive?
       end
+    elsif xarg[0].class == Integer && xarg[1].class == Symbol
+      ret_val = xarg[0]
+      my_each_with_index { |val, i| ret_val = xarg[1].to_proc.call(ret_val, val) if i.positive? }
     else
       ret_val = xarg[0]
       my_each { |i| ret_val = yield(ret_val, i) }
