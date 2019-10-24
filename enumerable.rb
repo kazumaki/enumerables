@@ -132,7 +132,7 @@ module Enumerable
       end
     elsif xarg[0].class == Integer && xarg[1].class == Symbol
       ret_val = xarg[0]
-      my_each_with_index { |val, i| ret_val = xarg[1].to_proc.call(ret_val, val) }
+      my_each { |val| ret_val = xarg[1].to_proc.call(ret_val, val) }
     else
       ret_val = xarg[0]
       my_each { |i| ret_val = yield(ret_val, i) }
@@ -149,3 +149,6 @@ end
 def multiply_els(arr)
   arr.my_inject { |result, value| result * value }
 end
+
+range = Range.new(5,50)
+puts range.my_inject(2, :*) === range.inject(2, :*) #false
