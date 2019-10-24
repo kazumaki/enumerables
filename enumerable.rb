@@ -132,7 +132,7 @@ module Enumerable
       end
     elsif xarg[0].class == Integer && xarg[1].class == Symbol
       ret_val = xarg[0]
-      my_each_with_index { |val, i| ret_val = xarg[1].to_proc.call(ret_val, val) if i.positive? }
+      my_each_with_index { |val, i| ret_val = xarg[1].to_proc.call(ret_val, val) }
     else
       ret_val = xarg[0]
       my_each { |i| ret_val = yield(ret_val, i) }
