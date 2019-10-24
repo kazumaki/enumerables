@@ -149,6 +149,3 @@ end
 def multiply_els(arr)
   arr.my_inject { |result, value| result * value }
 end
-
-range = Range.new(5,50)
-puts range.my_inject(2, :*) === range.inject(2, :*) #false
